@@ -1,0 +1,23 @@
+author: Navid K.
+description: "Lithium Mod"
+main: com.lastabyss.lithium.Lithium
+name: Lithium
+url: http://www.lastabyss.com/
+load: STARTUP
+version: '1.2'
+softdepend: [InfernalMobs, CoreProtect]
+
+permissions:
+  lithium.admin:
+    description: Admin perms
+    default: op
+
+  lithium.user:
+    description: Basic user perms
+    default: true
+
+commands:
+    lithium:
+        description: "Main command for Lithium"
+        usage: "/<command> [argument]"
+        aliases: [l, lith, lm, lthm, li]

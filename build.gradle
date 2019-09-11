@@ -1,0 +1,62 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
+}
+
+sourceCompatibility = '1.8'
+ext.spigotVersion = '1.11-R0.1-SNAPSHOT'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+build.dependsOn(shadowJar)
+
+repositories {
+    mavenCentral()
+    maven {
+        name 'Sonatype'
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
+    maven {
+        name 'Spigot'
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name 'Vault-Repo'
+        url 'http://nexus.theyeticave.net/content/repositories/pub_releases'
+    }
+    maven {
+        name 'Elmakers-Repo'
+        url 'http://maven.elmakers.com/repository/'
+    }
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+file('libs').mkdirs()
+
+ant.get src: 'https://www.dropbox.com/s/1ofgubrldjwamnk/spigot.jar?dl=1', dest: file('libs'), verbose: false, skipexisting: true
+ant.get src: 'https://www.dropbox.com/s/yilriutmsup5oc5/InfernalMobs.jar?dl=1', dest: file('libs'), verbose: false, skipexisting: true
+ant.get src: 'https://www.dropbox.com/s/npa7wjc2renv9cm/WizardlyMagic.jar?dl=1', dest: file('libs'), verbose: false, skipexisting: true
+ant.get src: 'https://www.dropbox.com/s/urx928obcbf9pzu/CoreProtect.jar?dl=1', dest: file('libs'), verbose: false, skipexisting: true
+
+shadowJar {
+    baseName "Lithium"
+    classifier ""
+
+    dependencies {
+        include(dependency("de.slikey:EffectLib"))
+    }
+
+    relocate "de.slikey.effectlib", "com.lastabyss.effectlib"
+}
+
+dependencies {
+    compile "org.spigotmc:spigot-api:$project.ext.spigotVersion"
+    compile "de.slikey:EffectLib:5.3-SNAPSHOT"
+    compile name: 'spigot'
+    compile name: 'InfernalMobs'
+    compile name: 'WizardlyMagic'
+    compile name: 'CoreProtect'
+    testCompile group: 'junit', name: 'junit', version: '4.10'
+}
